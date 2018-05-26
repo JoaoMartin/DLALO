@@ -80,12 +80,12 @@ namespace CapaPresentacion
 
                                 subTotal = subTotal + Convert.ToDecimal(importeR);
                                 descInd = descInd + Convert.ToDecimal(descuentoR);
-                                total = total + Convert.ToDecimal(importeR) - descuentoR;
+                                total = total + Convert.ToDecimal(importeR);
 
                                 dgSepara1.Rows.Add(cod,producto, cantidad1, precioVenta, descuentoR, importe, importeR,barra,tipo);
                             }
 
-                            this.lblSubTotal.Text = subTotal.ToString();
+                           
                             if (descInd == 0)
                             {
                                 this.lblDescuento.Text = "00.00";
@@ -105,6 +105,8 @@ namespace CapaPresentacion
                             {
                                 this.lblRedondeo.Text = redondeo.ToString();
                             }
+                            this.lblSubTotal.Text = subTotal.ToString();
+                            lblSubTotal.Text = Convert.ToString(Convert.ToDecimal(lblSubTotal.Text) + Convert.ToDecimal(lblDescuento.Text));
 
                             this.lblTotal.Text = totalR.ToString();
                         }
@@ -136,7 +138,7 @@ namespace CapaPresentacion
                             }
 
 
-                            this.lblSubTotal.Text = subTotal.ToString();
+                          
                             if (descInd == 0)
                             {
                                 this.lblDescuento.Text = "00.00";
@@ -156,6 +158,8 @@ namespace CapaPresentacion
                             {
                                 this.lblRedondeo.Text = redondeo.ToString();
                             }
+                            this.lblSubTotal.Text = subTotal.ToString();
+                            lblSubTotal.Text = Convert.ToString(Convert.ToDecimal(lblSubTotal.Text) + Convert.ToDecimal(lblDescuento.Text));
 
                             this.lblTotal.Text = totalR.ToString();
 

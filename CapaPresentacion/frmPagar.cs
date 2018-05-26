@@ -1994,30 +1994,33 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
             }
             else if (lblBanderaCobro.Text == "3")
             {
-                
+
                 CobrarReserva();
             }
             else
             {
-                if(lblBanderaComprobante.Text == "1")
+                if (lblBanderaComprobante.Text == "1")
                 {
                     if (total > 700 && (txtIdCliente.Text.Length == 0 || txtDocumento.Text.Length == 0 || txtNombre.Text.Length == 0 || txtDireccion.Text.Length == 0))
                     {
                         MessageBox.Show("El monto supera los 700 soles, complete todos los datos del cliente");
                         return;
-                    }else
+                    }
+                    else
                     {
                         Cobrar();
                     }
-                }else if( lblBanderaComprobante.Text == "0")
+                }
+                else if (lblBanderaComprobante.Text == "0")
                 {
                     MessageBox.Show("Seleccione BOLETA o FACTURA");
-                }else if(lblBanderaComprobante.Text == "2")
+                }
+                else if (lblBanderaComprobante.Text == "2")
                 {
                     Cobrar();
                 }
-              
-                
+
+
             }
 
 
@@ -2029,17 +2032,7 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
             this.btnBoleta.BackColor = Color.FromArgb(236, 236, 236);
             this.btnFactura.BackColor = Color.FromArgb(205, 201, 201);
             this.btnTicket.BackColor = Color.FromArgb(205, 201, 201);
-
-            if (lblBanderaCobro.Text != "3")
-            {
-                decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-                decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-                this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                decimal totalIgvText = totalText - totalSubTotalText;
-                this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-            }
-
+            MontosNuevosDescuento();
             this.dataListadoProducto.Select();
 
         }
@@ -2050,18 +2043,7 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
             this.btnFactura.BackColor = Color.FromArgb(236, 236, 236);
             this.btnBoleta.BackColor = Color.FromArgb(205, 201, 201);
             this.btnTicket.BackColor = Color.FromArgb(205, 201, 201);
-
-            if (lblBanderaCobro.Text != "3")
-            {
-
-                decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-                decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-                this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                decimal totalIgvText = totalText - totalSubTotalText;
-                this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-            }
-
+            MontosNuevosDescuento();
             this.dataListadoProducto.Select();
         }
 
@@ -2188,16 +2170,19 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
                 this.txtNombre.ReadOnly = true;
                 this.txtDireccion.ReadOnly = true;
                 this.dataListadoProducto.Select();
-            }else if(lblBanderaComprobante.Text == "2")
+            }
+            else if (lblBanderaComprobante.Text == "2")
             {
-                if(txtDocumento.Text.Trim().Length == 0 || txtDocumento.Text.Trim().Length != 11)
+                if (txtDocumento.Text.Trim().Length == 0 || txtDocumento.Text.Trim().Length != 11)
                 {
                     MessageBox.Show("Ingrese un número de documento válido");
                     return;
-                }else if(txtNombre.Text.Trim().Length == 0 || txtDireccion.Text.Trim().Length == 0)
+                }
+                else if (txtNombre.Text.Trim().Length == 0 || txtDireccion.Text.Trim().Length == 0)
                 {
                     MessageBox.Show("Complete el nombre y la dirección");
-                }else
+                }
+                else
                 {
                     rpta = NCliente.InsertarVenta(txtNombre.Text.Trim().ToUpper(), DateTime.MinValue, "RUC", txtDocumento.Text.Trim(), txtDireccion.Text.Trim(), "", "");
                     this.txtIdCliente.Text = rpta;
@@ -2211,7 +2196,7 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-          
+
             GuardarCliente();
 
         }
@@ -2276,21 +2261,24 @@ frmReservar.f1.txtNombre.Text.ToUpper().Trim(), frmReservar.f1.txtCel.Text.Trim(
             }
         }
 
+        public void MontosNuevosDescuento()
+        {
+            decimal totalText = Convert.ToDecimal(this.lblTotal.Text) + Convert.ToDecimal(lblDctoGeneral.Text) + Convert.ToDecimal(lblDescuento.Text) -
+                                Convert.ToDecimal(this.lblDescuento.Text);
+            decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
+
+            this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+            decimal totalIgvText = Convert.ToDecimal(lblTotal.Text) - totalSubTotalText;
+            this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+        }
+
         private void btnTicket_Click(object sender, EventArgs e)
         {
             this.lblBanderaComprobante.Text = "0";
             this.btnTicket.BackColor = Color.FromArgb(236, 236, 236);
             this.btnFactura.BackColor = Color.FromArgb(205, 201, 201);
             this.btnBoleta.BackColor = Color.FromArgb(205, 201, 201);
-            if (lblBanderaCobro.Text != "3")
-            {
-                decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-                decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-                this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                decimal totalIgvText = totalText - totalSubTotalText;
-                this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-            }
+            MontosNuevosDescuento();
 
             //txtDocumento.ReadOnly = true;
             txtNombre.ReadOnly = true;

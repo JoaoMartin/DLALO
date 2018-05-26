@@ -134,7 +134,7 @@ namespace CapaPresentacion
             }
         }
 
-        private void mostrarTotales()
+        public void mostrarTotales()
         {
             decimal total = Convert.ToDecimal(this.lblTotal.Text);
             decimal tarjeta;
@@ -1861,19 +1861,24 @@ namespace CapaPresentacion
             Cobrar();
         }
 
+        public void MontosNuevosDescuento()
+        {
+            decimal totalText = Convert.ToDecimal(this.lblTotal.Text) + Convert.ToDecimal(lblDctoGeneral.Text) + Convert.ToDecimal(lblDescuento.Text) -
+                                Convert.ToDecimal(this.lblDescuento.Text);
+            decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
+
+            this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+            decimal totalIgvText = Convert.ToDecimal(lblTotal.Text) - totalSubTotalText;
+            this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+        }
+
         private void btnBoleta_Click(object sender, EventArgs e)
         {
             this.lblBanderaComprobante.Text = "1";
             this.btnBoleta.BackColor = Color.FromArgb(236, 236, 236);
             this.btnFactura.BackColor = Color.FromArgb(205, 201, 201);
             this.btnTicket.BackColor = Color.FromArgb(205, 201, 201);
-
-            decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-            decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-            this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-            decimal totalIgvText = totalText - totalSubTotalText;
-            this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+            MontosNuevosDescuento();
             this.dataListadoProducto.Select();
         }
 
@@ -1884,12 +1889,7 @@ namespace CapaPresentacion
             this.btnBoleta.BackColor = Color.FromArgb(205, 201, 201);
             this.btnTicket.BackColor = Color.FromArgb(205, 201, 201);
 
-            decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-            decimal totalSubTotalText =(totalText  - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-            this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-            decimal totalIgvText = totalText - totalSubTotalText;
-            this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+            MontosNuevosDescuento();
             this.dataListadoProducto.Select();
         }
 
@@ -2403,12 +2403,7 @@ namespace CapaPresentacion
             this.btnFactura.BackColor = Color.FromArgb(205, 201, 201);
             this.btnBoleta.BackColor = Color.FromArgb(205, 201, 201);
 
-            decimal totalText = Convert.ToDecimal(this.lblTotal.Text);
-            decimal totalSubTotalText = (totalText - Convert.ToDecimal(this.lblDctoGeneral.Text)) / 1.18m;
-
-            this.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-            decimal totalIgvText = totalText - totalSubTotalText;
-            this.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+            MontosNuevosDescuento();
             this.dataListadoProducto.Select();
         }
 

@@ -76,7 +76,10 @@ namespace CapaPresentacion
         {
             this.Close();
         }
+        private void frmDescuentoTotal_Load(object sender, EventArgs e)
+        {
 
+        }
         private void btnRetroceso_Click(object sender, EventArgs e)
         {
             if (this.txtNumero.Text.Length == 1)
@@ -185,148 +188,113 @@ namespace CapaPresentacion
             {
                 if (this.lblIdBandera.Text == "0")
                 {
-                    if (frmPagar.f1.lblBanderaComprobante.Text == "2")
+
+                    decimal subtotal, dctoInd, dctoGeneral, total, totalN, dctoAnt;
+
+                    totalN = Convert.ToDecimal(frmPagar.f1.lblTotal.Text);
+                    subtotal = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text);
+                    dctoInd = Convert.ToDecimal(frmPagar.f1.lblDescuento.Text);
+                    dctoAnt = Convert.ToDecimal(frmPagar.f1.lblDctoGeneral.Text);
+                    dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
+                    if (dctoGeneral == 0)
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total, totalN;
-
-                        totalN = Convert.ToDecimal(frmPagar.f1.lblTotal.Text);
-                        subtotal = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagar.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-                        if (dctoGeneral == 0)
-                        {
-                            total = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagar.f1.lblIgv.Text) - Convert.ToDecimal(frmPagar.f1.lblMontoAdelanto.Text);
-                        }
-                        else
-                        {
-                            total = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagar.f1.lblIgv.Text) - dctoGeneral;
-                        }
-
-
-                        decimal totalSubTotalText = total / 1.18m;
-
-                        //   frmPagar.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                        // decimal totalIgvText = total - totalSubTotalText;
-                        //frmPagar.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-
-                        frmPagar.f1.lblTotal.Text = total.ToString();
-                        frmPagar.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-                        frmPagar.f1.mostrarTotales();
-                        this.Close();
-                        frmPagar.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagar.f1.lblIgv.Text) - Convert.ToDecimal(frmPagar.f1.lblMontoAdelanto.Text)
+                                + dctoAnt;
                     }
                     else
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total;
-
-                        subtotal = Convert.ToDecimal(frmPagar.f1.lblTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagar.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-
-                        total = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagar.f1.lblIgv.Text) - dctoGeneral - dctoInd-
-                            Convert.ToDecimal(frmPagar.f1.lblMontoAdelanto.Text);
-                        frmPagar.f1.lblTotal.Text = total.ToString();
-                        frmPagar.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-                        frmPagar.f1.mostrarTotales();
-                        this.Close();
-                        frmPagar.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagar.f1.lblIgv.Text) + dctoAnt - dctoGeneral;
                     }
+
+
+                    decimal totalSubTotalText = total / 1.18m;
+
+                    //   frmPagar.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    // decimal totalIgvText = total - totalSubTotalText;
+                    //frmPagar.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+
+                    frmPagar.f1.lblTotal.Text = total.ToString();
+                    frmPagar.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
+                    frmPagar.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    decimal igv = total - Convert.ToDecimal(frmPagar.f1.lblSubTotal.Text);
+                    frmPagar.f1.lblIgv.Text = igv.ToString();
+                    frmPagar.f1.mostrarTotales();
+                    frmPagar.f1.MontosNuevosDescuento();
+                    this.Close();
+                    frmPagar.f1.dataListadoProducto.Select();
+
                 }
                 else if (this.lblIdBandera.Text == "1")
                 {
-                    if (frmPagarSeparada.f1.lblBanderaComprobante.Text == "1")
+                    decimal subtotal, dctoInd, dctoGeneral, total, dctoAnt;
+
+                    subtotal = Convert.ToDecimal(frmPagarSeparada.f1.lblTotal.Text);
+                    dctoInd = Convert.ToDecimal(frmPagarSeparada.f1.lblDescuento.Text);
+                    dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
+                    dctoAnt = Convert.ToDecimal(frmPagarSeparada.f1.lblDctoGeneral.Text);
+                    if (dctoGeneral == 0)
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total;
-
-                        subtotal = Convert.ToDecimal(frmPagarSeparada.f1.lblTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagarSeparada.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-                        if (dctoGeneral == 0)
-                        {
-                            total = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblIgv.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblDctoGeneral.Text);
-                        }
-                        else
-                        {
-                            total = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblIgv.Text) - dctoGeneral;
-                        }
-
-
-                        decimal totalSubTotalText = total / 1.18m;
-
-                        // frmPagarSeparada.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                        //decimal totalIgvText = total - totalSubTotalText;
-                        //frmPagarSeparada.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-
-                        frmPagarSeparada.f1.lblTotal.Text = total.ToString();
-                        frmPagarSeparada.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-
-                        this.Close();
-                        frmPagarSeparada.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblIgv.Text) +
+                           dctoAnt;
                     }
                     else
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total;
-
-                        subtotal = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagarSeparada.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-
-                        total = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblIgv.Text) - dctoGeneral - dctoInd;
-                        frmPagarSeparada.f1.lblTotal.Text = total.ToString();
-                        frmPagarSeparada.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-
-                        this.Close();
-                        frmPagarSeparada.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarSeparada.f1.lblIgv.Text) + dctoAnt - dctoGeneral;
                     }
+
+
+                    decimal totalSubTotalText = total / 1.18m;
+
+                    // frmPagarSeparada.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    //decimal totalIgvText = total - totalSubTotalText;
+                    //frmPagarSeparada.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+
+                    frmPagarSeparada.f1.lblTotal.Text = total.ToString();
+                    frmPagarSeparada.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
+                    frmPagarSeparada.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    decimal igv = total - Convert.ToDecimal(frmPagarSeparada.f1.lblSubTotal.Text);
+                    frmPagarSeparada.f1.lblIgv.Text = igv.ToString();
+                    frmPagarSeparada.f1.mostrarTotales();
+                    this.Close();
+                    frmPagarSeparada.f1.dataListadoProducto.Select();
+
 
                 }
                 else if (lblIdBandera.Text == "2")
                 {
 
-                    if (frmPagarDividida.f1.lblBanderaComprobante.Text == "1")
+                    decimal subtotal, dctoInd, dctoGeneral, total, dctoAnt;
+
+                    subtotal = Convert.ToDecimal(frmPagarDividida.f1.lblTotal.Text);
+                    dctoInd = Convert.ToDecimal(frmPagarDividida.f1.lblDescuento.Text);
+                    dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
+                    dctoAnt = Convert.ToDecimal(frmPagarDividida.f1.lblDctoGeneral.Text);
+                    if (dctoGeneral == 0)
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total;
-
-                        subtotal = Convert.ToDecimal(frmPagarDividida.f1.lblTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagarDividida.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-                        if (dctoGeneral == 0)
-                        {
-                            total = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblIgv.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblDctoGeneral.Text);
-                        }
-                        else
-                        {
-                            total = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblIgv.Text) - dctoGeneral;
-                        }
-
-
-                        decimal totalSubTotalText = total / 1.18m;
-
-                        // frmPagarDividida.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
-                        //decimal totalIgvText = total - totalSubTotalText;
-                        //frmPagarDividida.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
-
-                        frmPagarDividida.f1.lblTotal.Text = total.ToString();
-                        frmPagarDividida.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-
-                        this.Close();
-                        frmPagarDividida.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblIgv.Text) +
+                                                      dctoAnt;
                     }
                     else
                     {
-                        decimal subtotal, dctoInd, dctoGeneral, total;
-
-                        subtotal = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text);
-                        dctoInd = Convert.ToDecimal(frmPagarDividida.f1.lblDescuento.Text);
-                        dctoGeneral = Convert.ToDecimal(this.txtNumero.Text.Trim());
-
-                        total = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblIgv.Text) - dctoGeneral - dctoInd;
-                        frmPagarDividida.f1.lblTotal.Text = total.ToString();
-                        frmPagarDividida.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
-
-                        this.Close();
-                        frmPagarDividida.f1.dataListadoProducto.Select();
+                        total = Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text) + Convert.ToDecimal(frmPagarDividida.f1.lblIgv.Text) + dctoAnt - dctoGeneral;
                     }
+
+
+                    decimal totalSubTotalText = total / 1.18m;
+
+                    // frmPagarDividida.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    //decimal totalIgvText = total - totalSubTotalText;
+                    //frmPagarDividida.f1.lblIgv.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalIgvText));
+
+                    frmPagarDividida.f1.lblTotal.Text = total.ToString();
+                    frmPagarDividida.f1.lblSubTotal.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(totalSubTotalText));
+                    decimal igv = total - Convert.ToDecimal(frmPagarDividida.f1.lblSubTotal.Text);
+                    frmPagarDividida.f1.lblIgv.Text = igv.ToString();
+                    frmPagarDividida.f1.lblDctoGeneral.Text = string.Format(" {0:#,##0.00}", Convert.ToDouble(this.txtNumero.Text));
+                    frmPagarDividida.f1.mostrarTotales();
+                    this.Close();
+                    frmPagarDividida.f1.dataListadoProducto.Select();
+
                 }
 
             }
