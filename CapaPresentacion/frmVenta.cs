@@ -2974,6 +2974,7 @@ namespace CapaPresentacion
                 this.btnLimpiar.Enabled = true;
                 this.btnReservar.Enabled = false;
                 cantFilas = dataListadoDetalle.Rows.Count;
+                
             }
             else
             {
